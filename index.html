@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="fil">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magtanong kay Joule - Interactive Assistant</title>
+    <style>
+        /* Modern App Shell & Core Demo Visual Palette */
+        * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; }
+        
+        body { 
+            background: linear-gradient(135deg, #2d1316 0%, #151c16 50%, #1a1520 100%); 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            width: 100vw;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        /* Responsive Mobile Mockup Container Matching Your Live Presentation Preview */
+        .app-window {
+            width: 410px;
+            height: 680px;
+            background-color: #fcfbfa; /* Ang signature soft cream background */
+            border-radius: 40px;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45);
+            border: 8px solid #1c1a17; /* Sleek bezel frame mockup */
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* Top Bar Header Area Styling */
+        .app-header {
+            padding: 24px 24px 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #fcfbfa;
+        }
+        .header-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .brand-logo-circle {
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(135deg, #f07e48 0%, #e65c23 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.9rem;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(230, 92, 35, 0.3);
+        }
+        .header-title h2 {
+            font-size: 1.05rem;
+            color: #1c1a17;
+            font-weight: 700;
+        }
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            color: #706e6a;
+            cursor: pointer;
+            padding: 4px;
+        }
+
+        /* Interactive Chat Canvas Body Area */
+        .chat-view {
+            flex: 1;
+            padding: 0 24px 16px 24px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            background-color: #fcfbfa;
+        }
+
+        /* Custom Soft Curved Chat Dialogue Modules */
+        .chat-bubble {
+            max-width: 85%;
+            padding: 14px 18px;
+            font-size: 0.92rem;
+            line-height: 1.45;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+        }
+        .bot-bubble {
+            background-color: #ffffff;
+            color: #2d2a26;
+            border-radius: 20px 20px 20px 4px;
+            border: 1px solid #f0eee9;
+            align-self: flex-start;
+        }
+        .user-bubble {
+            background-color: #eeb34c; /* Ang inyong corporate brand yellow code */
+            color: #1b3a56;
+            border-radius: 20px 20px 4px 20px;
+            align-self: flex-end;
+            font-weight: 500;
+        }
+
+        /* Horizontal Quick-Select Scrolling Suggestions Container */
+        .suggestion-scroller {
+            padding: 8px 24px;
+            background-color: #fcfbfa;
+            overflow-x: auto;
+            white-space: nowrap;
+            display: flex;
+            gap: 8px;
+            scrollbar-width: none; /* Itago ang standard scrollbars */
+        }
+        .suggestion-scroller::-webkit-scrollbar {
+            display: none;
+        }
+        .chip-button {
+            display: inline-block;
+            background-color: #ffffff;
+            border: 1px solid #ebd8d0;
+            color: #b84f33; /* Crimson-brown tone gaya ng nasa screenshot interface ninyo */
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .chip-button:hover {
+            background-color: #fcf5f2;
+            border-color: #b84f33;
+        }
+
+        /* Floating Fixed Input Action Interface Frame Layout */
+        .input-dock {
+            padding: 16px 24px 24px 24px;
+            background-color: #fcfbfa;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .input-wrapper {
+            flex: 1;
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        .input-wrapper input {
+            width: 100%;
+            padding: 14px 50px 14px 20px;
+            background-color: #ffffff;
+            border: 1px solid #ebd8d0;
+            border-radius: 30px;
+            outline: none;
+            font-size: 0.9rem;
+            color: #1c1a17;
+            transition: border-color 0.2s;
+        }
+        .input-wrapper input:focus {
+            border-color: #b84f33;
+        }
+        
+        /* Premium Solid Rounded Black Action Dispatch Trigger */
+        .action-send-btn {
+            position: absolute;
+            right: 6px;
+            width: 38px;
+            height: 38px;
+            background-color: #1c1a17;
+            border: none;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .action-send-btn:hover {
+            background-color: #33302b;
+        }
+        .action-send-btn svg {
+            width: 16px;
+            height: 16px;
+            fill: none;
+            stroke: #ffffff;
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            transform: rotate(45deg);
+        }
+        .action-send-btn:disabled {
+            background-color: #cccac6;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-window">
+    <!-- Header Controls Container Grid Component -->
+    <header class="app-header">
+        <div class="header-brand">
+            <div class="brand-logo-circle">⚡</div>
+            <div class="header-title">
+                <h2>Magtanong kay Joule</h2>
+            </div>
+        </div>
+        <button class="close-btn">&times;</button>
+    </header>
+
+    <!-- Main Message Node Canvas History Panel -->
+    <main class="chat-view" id="chatBox">
+        <div class="chat-bubble bot-bubble">Kamusta! Ako si Joule — ang iyong AI energy assistant. Maaari mo akong tanungin tungkol sa iyong bill, mga appliances, o kung paano makatipid ngayong buwan.</div>
+    </main>
+
+    <!-- Horizontal Hot-Prompt Chips Dynamic Scroller Panel Component -->
+    <div class="suggestion-scroller">
+        <button class="chip-button" onclick="useQuickPrompt('Bakit mataas ang bill ko?')">Bakit mataas ang bill ko?</button>
+        <button class="chip-button" onclick="useQuickPrompt('Malapit na ba mawala ang subsidy ko?')">Malapit na ba mawala ang subsidy ko?</button>
+        <button class="chip-button" onclick="useQuickPrompt('Paano makatipid sa aircon?')">Paano makatipid sa aircon?</button>
+    </div>
+
+    <!-- Message Entry Form Panel Dock Block Container -->
+    <footer class="input-dock">
+        <div class="input-wrapper">
+            <input type="text" id="userInput" placeholder="Magtanong ukol sa bill, appliances, pagtitipid..." onkeypress="handleKeyPress(event)">
+            <button id="sendBtn" class="action-send-btn" onclick="sendMessage()">
+                <svg viewBox="0 0 24 24">
+                    <line x1="22" y1="2" x2="11" y2="13"></line>
+                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                </svg>
+            </button>
+        </div>
+    </footer>
+</div>
+
+<script>
+    const BACKEND_URL = "http://127.0.0.1:8000/api/chat";
+    const chatBox = document.getElementById("chatBox");
+    const userInput = document.getElementById("userInput");
+    const sendBtn = document.getElementById("sendBtn");
+
+    function handleKeyPress(event) {
+        if (event.key === "Enter") sendMessage();
+    }
+
+    function useQuickPrompt(promptText) {
+        userInput.value = promptText;
+        sendMessage();
+    }
+
+    async function sendMessage() {
+        const text = userInput.value.trim();
+        if (!text) return;
+
+        appendMessage(text, "user-bubble");
+        userInput.value = "";
+        
+        userInput.disabled = true;
+        sendBtn.disabled = true;
+
+        const loadingId = appendMessage("Nag-iisip...", "bot-bubble");
+
+        try {
+            const response = await fetch(BACKEND_URL, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ message: text })
+            });
+
+            if (!response.ok) throw new Error("Backend connection issue");
+
+            const data = await response.json();
+            document.getElementById(loadingId).innerText = data.response;
+
+        } catch (error) {
+            document.getElementById(loadingId).innerText = "Paumanhin, nagkaroon ng error sa pagkonekta sa server.";
+            console.error(error);
+        } finally {
+            userInput.disabled = false;
+            sendBtn.disabled = false;
+            userInput.focus();
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+    }
+
+    function appendMessage(text, className) {
+        const msgDiv = document.createElement("div");
+        const uniqueId = "msg-" + Date.now();
+        msgDiv.id = uniqueId;
+        msgDiv.className = `chat-bubble ${className}`;
+        msgDiv.innerText = text;
+        chatBox.appendChild(msgDiv);
+        chatBox.scrollTop = chatBox.scrollHeight;
+        return uniqueId;
+    }
+</script>
+
+</body>
+</html>
