@@ -52,4 +52,9 @@ async def chat_with_joule(input_data: ChatInput):
         )
         return {"response": response.text}
     except Exception as e:
+        # I-print ang buong error sa Render logs para makita natin ang totoong dahilan
+        print(f"ERROR sa /api/chat: {type(e).__name__}: {e}")
+        error_text = str(e).lower()
+        if "resource_exhausted" in error_text or "429" in error_text or "quota" in error_text:
+            raise HTTPException(status_code=429, detail="Rate limit ng Gemini API ang naabot. Sandaling maghintay bago magtanong ulit.")
         raise HTTPException(status_code=500, detail=str(e))
