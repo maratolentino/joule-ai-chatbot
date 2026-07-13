@@ -43,7 +43,7 @@ async def chat_with_joule(input_data: ChatInput):
     try:
         # Tawagin ang Gemini 1.5 Flash (Libre at may Guardrails)
         response = client.models.generate_content(
-            model='gemini-flash-latest',
+            model='gemini-flash-lite-latest',
             contents=input_data.message,
             config=types.GenerateContentConfig(
                 system_instruction=JOULE_GUARDRAIL,
