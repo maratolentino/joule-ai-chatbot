@@ -5,13 +5,13 @@ An interactive, mobile-responsive energy chatbot ecosystem built for Filipino ho
 
 This module serves as the conversational intelligence component of the **Joule AI** ecosystem—a hardware-free household energy manager designed to help consumers reduce electricity consumption. It translates complex billing statistics into highly actionable, easy-to-understand energy efficiency guidance.
 
-## 🌟 Key Features
+##  Key Features
 * **Strict Contextual Guardrails**: System-level prompt filtering confines the Large Language Model (LLM) strictly to power utilities, appliances, and energy safety bounds, forcing automatic refusal on out-of-scope topics.
 * **Localized Context & Tone**: Programmed to communicate fluently in English, Filipino, and Taglish to render advice natural, empathetic, and highly accessible to local consumers.
 * **Hot-Prompt Simulation Chips**: A custom sliding row of quick-select button presets allows judges and users to test critical billing queries instantly.
 * **Cross-Origin Configuration**: Equipped with decoupled CORS middleware architecture, providing secure and optimized local network bridge connections between the web client interface and the Python runtime server.
 
-## 🛠️ Tech Stack & Architecture
+##  Tech Stack & Architecture
 
 ### Frontend (Mobile App Shell Mockup)
 * **Languages**: HTML5, CSS3, JavaScript (Vanilla ES6+)
@@ -23,7 +23,7 @@ This module serves as the conversational intelligence component of the **Joule A
 * **AI Integration**: Google GenAI SDK (Interfacing the Gemini 1.5 Flash Model)
 * **Data Validation**: Pydantic (For structural data payload serialization and incoming types parsing)
 
-## 📦 Core Setup Requirements
+##  Core Setup Requirements
 * Python 3.10 or higher
 * Google AI Studio Developer Account (For the `GEMINI_API_KEY` provisioning)
 * Dependency libraries: `fastapi`, `uvicorn`, `google-genai`, `pydantic`
